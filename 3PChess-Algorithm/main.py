@@ -111,12 +111,17 @@ async def main(url, type_algorithm):
             print("Debug Info: possible_move =", possible_move, "trichess.Board =", trichess.Board, "type_algorithm =", type_algorithm)
             curr_position, move_to = algorithm.algorithm_provider(possible_move, trichess.Board, type_algorithm)
             print("Debug Info: curr_position =", curr_position, "move_to =", move_to)
-
             
             await trichess.send_move(curr_position, move_to)
             move_response = await trichess.receive_response()
+
             if move_response['Status'] == 'Success':
                 print(MESSAGE.MOVE_SUCCESS)
+            elif move_response['Status'] == 'RequirePromotion':
+                await trichess.promote()
+                promote_response = await trichess.receive_response()
+                if promote_response['Status'] == 'Success':
+                    print("PROMOTE SUCCESS")
         
         time.sleep(1)
 
@@ -134,3 +139,4 @@ if __name__ == '__main__':
         print("Thread: ", i, " started")
 
         time.sleep(0.5)
+

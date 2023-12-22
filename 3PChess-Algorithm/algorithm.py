@@ -5,7 +5,7 @@ def algorithm_provider(possible_move, current_board, type_algorithm):
     if type_algorithm == 1:
         return play_random(possible_move)
     if type_algorithm == 2:
-        return testalgo(possible_move, current_board)
+        return test_algo(possible_move, current_board)
     # handle any algorithm
     else:
         return play_random(possible_move)
@@ -27,28 +27,46 @@ def play_random(possible_move):
 
         time.sleep(1)
 
-def testalgo(possible_move, current_board):
-    targetvalue_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rocok':5, 'Queen':9, 'King':99}
-    value_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rocok':5, 'Queen':9, 'King':99}
-
-    top = 0
-    try:    
-        print("This is possible move: ", possible_move)
-
-        for p, m in possible_move.items():
-            for move in m:
-                if move in [entry['Field'] for entry in current_board]:
-                    random_piece = p
-                    random_move = move
-                    return random_piece, random_move
-        
-        
-
-        return play_random(possible_move)
-    except:
-        pass
-    time.sleep(1)
+def test_algo(possible_moves, current_board):
+    target_values = {'Pawn': 1, 'Knight': 3, 'Bishop': 3, 'Rook': 5, 'Queen': 9, 'King': 99}
     
+    best_piece = None
+    best_move = None
+    value = 0
+
+    for piece, moves in possible_moves.items():
+        for move in moves:
+            for entry in current_board:
+                if move in entry['Field'] and target_values[entry['Piece']] > value:
+                    value = target_values[entry['Piece']]
+                    best_piece = piece
+                    best_move = move
+
+    if best_piece is None or best_move is None:
+        return play_random(possible_moves)
+
+    return best_piece, best_move
+
+# def testalgo(possible_move, current_board):
+#     targetvalue_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rocok':5, 'Queen':9, 'King':99}
+#     value_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rocok':5, 'Queen':9, 'King':99}
+
+#     top = 0
+#     try:    
+#         print("This is possible move: ", possible_move)
+
+#         for p, m in possible_move.items():
+#             for move in m:
+#                 if move in [entry['Field'] for entry in current_board]:
+#                     random_piece = p
+#                     random_move = move
+#                     return random_piece, random_move
+        
+#         return play_random(possible_move)
+#     except:
+#         pass
+#     time.sleep(1)
+           
 # def testalgo(possible_move, current_board):
 #     targetvalue_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rook':5, 'Queen':9, 'King':99}
 #     value_chess = {'Pawn':1, 'Knight':3, 'Bishop':3, 'Rook':5, 'Queen':9, 'King':99}

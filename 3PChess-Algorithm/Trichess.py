@@ -73,5 +73,10 @@ class Trichess:
         pass
     def check_king(self):
         pass
-    def promote(self):
-        pass
+    async def promote(self):
+            data = {
+                "Command": "Promote",
+                "Password": self.Password,
+                "Promotion": "Queen"
+            }
+            await self.websocket.send(json.dumps(data))
